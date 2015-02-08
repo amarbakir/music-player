@@ -22,10 +22,10 @@ public class MusicPlayer extends JFrame{
 		
 
 		// Set up the Panels
+		JPanel listPanel = new JPanel(new GridLayout(0,1));
 		JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
-		JPanel confirmPanel = new JPanel(new GridLayout(0, 1));
 		JPanel textPanel = new JPanel(new GridLayout(0, 1));
-		JPanel listPanel = new JPanel(new GridLayout(0, 1));
+		JPanel confirmPanel = new JPanel(new GridLayout(0,2));
 		
 		add(listPanel);
 		add(buttonPanel);
