@@ -1,7 +1,11 @@
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -79,7 +83,7 @@ public class MusicPlayer extends JFrame{
 		add(buttonPanel);
 	}
 	
-	public void addActionPerformed(ActionEvent e) {
+	public void addActionPerformed(ActionEvent e) throws IOException {
 		File songFile = new File("MusicPlayer.txt");
 		if(!songFile.exists()) {
 			songFile.createNewFile();
@@ -93,11 +97,7 @@ public class MusicPlayer extends JFrame{
 	}
 	
 	public void deleteActionPerformed(ActionEvent e) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(name.getText() + "|");
-		sb.append(artist.getText() + "|");
-		sb.append(album.getText() + "|");
-		sb.append(year.getText());
+		
 	}
 	
 	public static void main(String[] args){
