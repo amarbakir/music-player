@@ -3,6 +3,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -86,6 +88,55 @@ public class MusicPlayer extends JFrame{
 		add(textPanel);
 		add(buttonPanel);
 		
+		name.addFocusListener(new FocusListener(){
+	        @Override
+	        public void focusGained(FocusEvent e){
+	        	name.setText("");
+	        }
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+	    });
+		artist.addFocusListener(new FocusListener(){
+	        @Override
+	        public void focusGained(FocusEvent e){
+	        	artist.setText("");
+	        }
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+	    });
+		album.addFocusListener(new FocusListener(){
+	        @Override
+	        public void focusGained(FocusEvent e){
+	        	album.setText("");
+	        }
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+	    });
+		year.addFocusListener(new FocusListener(){
+	        @Override
+	        public void focusGained(FocusEvent e){
+	        	year.setText("");
+	        }
+
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+	    });
+		
 		add.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				StringBuilder sb = new StringBuilder();
@@ -134,10 +185,6 @@ public class MusicPlayer extends JFrame{
 				}
 			}
 		});
-	}
-	
-	public void deleteActionPerformed(ActionEvent e) {
-		
 	}
 	
 	public static void main(String[] args){
