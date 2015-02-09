@@ -79,6 +79,27 @@ public class MusicPlayer extends JFrame{
 		add(buttonPanel);
 	}
 	
+	public void addActionPerformed(ActionEvent e) {
+		File songFile = new File("MusicPlayer.txt");
+		if(!songFile.exists()) {
+			songFile.createNewFile();
+		} 
+		FileOutputStream outFile = new FileOutputStream(songFile, false);
+		StringBuilder sb = new StringBuilder();
+		sb.append(name.getText() + "|");
+		sb.append(artist.getText() + "|");
+		sb.append(album.getText() + "|");
+		sb.append(year.getText());
+	}
+	
+	public void deleteActionPerformed(ActionEvent e) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(name.getText() + "|");
+		sb.append(artist.getText() + "|");
+		sb.append(album.getText() + "|");
+		sb.append(year.getText());
+	}
+	
 	public static void main(String[] args){
 		MusicPlayer mp = new MusicPlayer("Our Library");
 		mp.setDefaultCloseOperation(EXIT_ON_CLOSE);
