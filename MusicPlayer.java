@@ -2,11 +2,10 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,10 +18,13 @@ import javax.swing.ListSelectionModel;
 
 public class MusicPlayer extends JFrame{
 
+	public static int songCount = 0;
 	JButton add, edit, delete, confirm, cancel;
 	JLabel nLabel, artLabel, albLabel, yLabel;
 	JTextField name, artist, album, year;
 	JList songList;
+	DefaultListModel<String> model;
+	ArrayList<String> songDB = new ArrayList<String>();
 	
 	public MusicPlayer(String title){
 		super(title);
@@ -37,7 +39,9 @@ public class MusicPlayer extends JFrame{
 		JPanel textPanel = new JPanel(new GridLayout(0, 1, 0, 0));
 		
 		//AddListbox
+		model = new DefaultListModel<String>();
 		songList = new JList();
+		songList.setModel(model);
 		songList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		songList.setSelectedIndex(0);
 		//songList.addListSelectionListener(this);
@@ -81,19 +85,55 @@ public class MusicPlayer extends JFrame{
 		add(listPanel);
 		add(textPanel);
 		add(buttonPanel);
-	}
-	
-	public void addActionPerformed(ActionEvent e) throws IOException {
-		File songFile = new File("MusicPlayer.txt");
-		if(!songFile.exists()) {
-			songFile.createNewFile();
-		} 
-		FileOutputStream outFile = new FileOutputStream(songFile, false);
-		StringBuilder sb = new StringBuilder();
-		sb.append(name.getText() + "|");
-		sb.append(artist.getText() + "|");
-		sb.append(album.getText() + "|");
-		sb.append(year.getText());
+		
+		add.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				StringBuilder sb = new StringBuilder();
+				if (name.getText() == null) {
+					return;
+				} else {
+					sb.append(name.getText() + "|");
+				}
+				if (artist.getText() == null) {
+					return;
+				} else {
+					sb.append(artist.getText() + "|");
+				}
+				if (album.getText() != null) {
+					sb.append(album.getText() + "|");
+				}
+				if (year.getText() != null) {
+					sb.append(year.getText());
+				}
+				
+				String delims = "|";
+				String[] tokens = sb.toString().split(delims);
+				String[] currentEntry;
+				for (int i = 0; i < songDB.size(); i++) {
+					currentEntry = songDB.get(i).split(delims);
+					if (tokens[0].equalsIgnoreCase(currentEntry[0]) && tokens[1].equalsIgnoreCase(currentEntry[1])) {
+						return;
+					} else {
+						if(tokens[0].compareToIgnoreCase(currentEntry[0]) > 0) {
+							continue;
+						} else {
+							songDB.add(i-1, sb.toString());
+							name.setText(null);
+							artist.setText(null);
+							album.setText(null);
+							year.setText(null);
+							model = new DefaultListModel<String>();
+							for(int j = 0; j < songDB.size(); j++) {
+						        model.addElement(songDB.get(j));
+						        songList.setModel(model);
+						        songList.setSelectedIndex(i-1);
+						    }
+							break;
+						}
+					}
+				}
+			}
+		});
 	}
 	
 	public void deleteActionPerformed(ActionEvent e) {
