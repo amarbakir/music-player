@@ -1,3 +1,5 @@
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
@@ -37,7 +39,8 @@ public class MusicPlayer extends JFrame{
 		//songList.addListSelectionListener(this);
 		songList.setVisibleRowCount(15);
 	    JScrollPane listScrollPane = new JScrollPane(songList);
-		listPanel.add(listScrollPane);
+	    listPanel.add(listScrollPane);
+	    listPanel.setPreferredSize(new Dimension (500, 200));
 	    
 		//Add Buttons
 		add = new JButton("Add");
@@ -79,7 +82,7 @@ public class MusicPlayer extends JFrame{
 	public static void main(String[] args){
 		MusicPlayer mp = new MusicPlayer("Our Library");
 		mp.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		mp.setSize(550,300);
+		mp.setSize(850,300);
 		mp.setResizable(false);
 		mp.setLocationRelativeTo(null);
 		mp.setVisible(true);
