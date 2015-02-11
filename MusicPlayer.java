@@ -24,6 +24,7 @@ public class MusicPlayer extends JFrame{
 	JButton add, edit, delete, confirm, cancel;
 	JLabel nLabel, artLabel, albLabel, yLabel;
 	JTextField name, artist, album, year;
+	JLabel userMessage;
 	JList<String> songList;
 	DefaultListModel<String> model;
 	ArrayList<String> songDB = new ArrayList<String>();
@@ -82,6 +83,14 @@ public class MusicPlayer extends JFrame{
 		textPanel.add(yLabel);
 		textPanel.add(year);
 		
+		//Add JLabel
+	    
+		userMessage = new JLabel();
+		listPanel.add(userMessage);
+		userMessage.setText("Here is the label");
+		userMessage.setPreferredSize(new Dimension (500, 50));
+		userMessage.setMaximumSize(new Dimension (500, 50));
+		userMessage.setMinimumSize(new Dimension (500, 50));
 		
 		//add the panels
 		add(listPanel);
