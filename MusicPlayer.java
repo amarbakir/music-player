@@ -21,7 +21,7 @@ import javax.swing.ListSelectionModel;
 public class MusicPlayer extends JFrame{
 
 	public static int songCount = 0;
-	JButton add, edit, delete, confirm, cancel;
+	JButton add, edit, delete, confirm, clear;
 	JLabel nLabel, artLabel, albLabel, yLabel;
 	JTextField name, artist, album, year;
 	JLabel userMessage;
@@ -31,6 +31,8 @@ public class MusicPlayer extends JFrame{
 	
 	public MusicPlayer(String title){
 		super(title);
+		
+		String delims = "|";
 		
 		// use FlowLayout
 		setLayout(new FlowLayout(FlowLayout.LEFT,10,10));
@@ -61,9 +63,10 @@ public class MusicPlayer extends JFrame{
 		delete = new JButton("Delete");
 		buttonPanel.add(delete);
 		confirm = new JButton("Confirm");
+		confirm.setEnabled(false);
 		buttonPanel.add(confirm);
-		cancel = new JButton("Cancel");
-		buttonPanel.add(cancel);
+		clear = new JButton("Clear");
+		buttonPanel.add(clear);
 		
 		//Add TextFields
 		name = new JTextField("Name", 10);
@@ -166,7 +169,6 @@ public class MusicPlayer extends JFrame{
 					sb.append(year.getText().trim());
 				}
 				
-				String delims = "|";
 				String[] tokens = sb.toString().split(delims);
 				String[] currentEntry;
 				String[] temp;
@@ -227,12 +229,46 @@ public class MusicPlayer extends JFrame{
 				}
 			}
 		});
+		
+		edit.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				confirm.setEnabled(true);
+			}
+		});
+		
+		delete.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				String[] temp;
+				songDB.remove(songList.getSelectedIndex());
+				model = new DefaultListModel<String>();
+				songList.setModel(model);
+		        songList.setSelectedIndex(0);
+		        temp = songDB.toArray(new String[songDB.size()]);
+		        songList.setListData(temp);
+		        songCount--;
+			}
+		});
+		
+		confirm.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				songDB.remove(songList.getSelectedIndex());
+			}
+		});
+		
+		clear.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				name.setText(null);
+				artist.setText(null);
+				album.setText(null);
+				year.setText(null);
+			}
+		});
 	}
 	
 	public static void main(String[] args){
 		MusicPlayer mp = new MusicPlayer("Our Library");
 		mp.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		mp.setSize(850,300);
+		mp.setSize(750,300);
 		mp.setResizable(false);
 		mp.setLocationRelativeTo(null);
 		mp.setVisible(true);
