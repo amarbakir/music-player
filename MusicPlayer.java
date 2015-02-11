@@ -3,7 +3,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
+import java.awt.event.FocusEvent;	
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
 
@@ -24,7 +24,7 @@ public class MusicPlayer extends JFrame{
 	JButton add, edit, delete, confirm, cancel;
 	JLabel nLabel, artLabel, albLabel, yLabel;
 	JTextField name, artist, album, year;
-	JList songList;
+	JList<String> songList;
 	DefaultListModel<String> model;
 	ArrayList<String> songDB = new ArrayList<String>();
 	
@@ -42,7 +42,7 @@ public class MusicPlayer extends JFrame{
 		
 		//AddListbox
 		model = new DefaultListModel<String>();
-		songList = new JList();
+		songList = new JList<String>();
 		songList.setModel(model);
 		songList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		songList.setSelectedIndex(0);
@@ -160,6 +160,21 @@ public class MusicPlayer extends JFrame{
 				String delims = "|";
 				String[] tokens = sb.toString().split(delims);
 				String[] currentEntry;
+				String[] temp;
+				if (songDB.size() == 0 || songCount == 0) {
+					songDB.add(sb.toString());
+					name.setText(null);
+					artist.setText(null);
+					album.setText(null);
+					year.setText(null);
+					model = new DefaultListModel<String>();
+					songList.setModel(model);
+			        songList.setSelectedIndex(0);
+			        temp = songDB.toArray(new String[songDB.size()]);
+			        songList.setListData(temp);
+			        songCount++;
+			        return;
+				}
 				for (int i = 0; i < songDB.size(); i++) {
 					currentEntry = songDB.get(i).split(delims);
 					if (tokens[0].equalsIgnoreCase(currentEntry[0]) && tokens[1].equalsIgnoreCase(currentEntry[1])) {
@@ -168,7 +183,7 @@ public class MusicPlayer extends JFrame{
 						if(tokens[0].compareToIgnoreCase(currentEntry[0]) > 0) {
 							continue;
 						} else {
-							songDB.add(i-1, sb.toString());
+							songDB.add(i, sb.toString());
 							name.setText(null);
 							artist.setText(null);
 							album.setText(null);
@@ -176,10 +191,13 @@ public class MusicPlayer extends JFrame{
 							model = new DefaultListModel<String>();
 							for(int j = 0; j < songDB.size(); j++) {
 						        model.addElement(songDB.get(j));
-						        songList.setModel(model);
-						        songList.setSelectedIndex(i-1);
 						    }
-							break;
+							songList.setModel(model);
+					        songList.setSelectedIndex(i);
+					        temp = songDB.toArray(new String[songDB.size()]);
+					        songList.setListData(temp);
+					        songCount++;
+							return;
 						}
 					}
 				}
