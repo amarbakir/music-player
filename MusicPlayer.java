@@ -140,21 +140,21 @@ public class MusicPlayer extends JFrame{
 		add.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				StringBuilder sb = new StringBuilder();
-				if (name.getText() == null) {
+				if (name.getText().trim() == null) {
 					return;
 				} else {
-					sb.append(name.getText() + "|");
+					sb.append(name.getText().trim() + "|");
 				}
-				if (artist.getText() == null) {
+				if (artist.getText().trim() == null) {
 					return;
 				} else {
-					sb.append(artist.getText() + "|");
+					sb.append(artist.getText().trim() + "|");
 				}
-				if (album.getText() != null) {
-					sb.append(album.getText() + "|");
+				if (album.getText().trim() != null) {
+					sb.append(album.getText().trim() + "|");
 				}
-				if (year.getText() != null) {
-					sb.append(year.getText());
+				if (year.getText().trim() != null) {
+					sb.append(year.getText().trim());
 				}
 				
 				String delims = "|";
@@ -175,7 +175,8 @@ public class MusicPlayer extends JFrame{
 			        songCount++;
 			        return;
 				}
-				for (int i = 0; i < songDB.size(); i++) {
+				int i = 0;
+				for (i = 0; i < songDB.size(); i++) {
 					currentEntry = songDB.get(i).split(delims);
 					if (tokens[0].equalsIgnoreCase(currentEntry[0]) && tokens[1].equalsIgnoreCase(currentEntry[1])) {
 						return;
@@ -200,6 +201,20 @@ public class MusicPlayer extends JFrame{
 							return;
 						}
 					}
+				}
+				if (i == songDB.size()) {
+					songDB.add(sb.toString());
+					name.setText(null);
+					artist.setText(null);
+					album.setText(null);
+					year.setText(null);
+					model = new DefaultListModel<String>();
+					songList.setModel(model);
+			        songList.setSelectedIndex(songDB.size() - 1);
+			        temp = songDB.toArray(new String[songDB.size()]);
+			        songList.setListData(temp);
+			        songCount++;
+			        return;
 				}
 			}
 		});
