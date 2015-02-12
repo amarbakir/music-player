@@ -251,7 +251,7 @@ public class MusicPlayer extends JFrame{
 		
 		confirm.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				songDB.remove(songList.getSelectedIndex());
+				
 			}
 		});
 		
@@ -261,6 +261,7 @@ public class MusicPlayer extends JFrame{
 				artist.setText(null);
 				album.setText(null);
 				year.setText(null);
+				confirm.setEnabled(false);
 			}
 		});
 	}
