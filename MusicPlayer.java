@@ -91,7 +91,7 @@ public class MusicPlayer extends JFrame{
 	    
 		userMessage = new JLabel();
 		listPanel.add(userMessage);
-		userMessage.setText("Here is the label");
+		userMessage.setText("Song description");
 		userMessage.setPreferredSize(new Dimension (500, 50));
 		userMessage.setMaximumSize(new Dimension (500, 50));
 		userMessage.setMinimumSize(new Dimension (500, 50));
@@ -158,6 +158,11 @@ public class MusicPlayer extends JFrame{
             @Override
             public void valueChanged(ListSelectionEvent arg0) {
                 if (!arg0.getValueIsAdjusting()) {
+                	if (songCount == 0) {
+                		userMessage.setText("Songlist is empty!");
+                		return;
+                	}
+                	int index = songList.getSelectedIndex();
                 	String[] tokens = songList.getSelectedValue().split(delims);
                 	String album;
                 	String year;
@@ -172,7 +177,7 @@ public class MusicPlayer extends JFrame{
                 }
             }
         });
-
+		
 		add.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				StringBuilder sb = new StringBuilder();
@@ -192,16 +197,13 @@ public class MusicPlayer extends JFrame{
 				String[] currentEntry;
 				String[] temp;
 				if (songDB.size() == 0 || songCount == 0) {
-					songDB.add(sb.toString());
 					name.setText(null);
 					artist.setText(null);
 					album.setText(null);
 					year.setText(null);
-					model = new DefaultListModel<String>();
-					songList.setModel(model);
-			        songList.setSelectedIndex(0);
-			        temp = songDB.toArray(new String[songDB.size()]);
-			        songList.setListData(temp);
+					model.addElement(sb.toString());
+					songDB.add(sb.toString());
+					songList.setSelectedIndex(0);
 			        songCount++;
 			        return;
 				}
@@ -216,35 +218,26 @@ public class MusicPlayer extends JFrame{
 						} else if (tokens[0].equalsIgnoreCase(currentEntry[0]) && tokens[1].compareToIgnoreCase(currentEntry[1]) > 0) {
 							continue;
 						} else {
-							songDB.add(i, sb.toString());
-							model = new DefaultListModel<String>();
-							for(int j = 0; j < songDB.size(); j++) {
-						        model.addElement(songDB.get(j));
-						    }
-							songList.setModel(model);
-					        songList.setSelectedIndex(i);
-					        temp = songDB.toArray(new String[songDB.size()]);
-					        songList.setListData(temp);
-					        songCount++;
-					        name.setText(null);
+							name.setText(null);
 							artist.setText(null);
 							album.setText(null);
 							year.setText(null);
-							return;
+							model.add(i, sb.toString());
+							songDB.add(i, sb.toString());
+							songList.setSelectedIndex(i);
+					        songCount++;
+					        return;
 						}
 					}
 				}
 				if (i == songDB.size()) {
-					songDB.add(sb.toString());
 					name.setText(null);
 					artist.setText(null);
 					album.setText(null);
 					year.setText(null);
-					model = new DefaultListModel<String>();
-					songList.setModel(model);
-			        songList.setSelectedIndex(songDB.size() - 1);
-			        temp = songDB.toArray(new String[songDB.size()]);
-			        songList.setListData(temp);
+					model.addElement(sb.toString());
+					songDB.add(sb.toString());
+					songList.setSelectedIndex(songDB.size() - 1);
 			        songCount++;
 			        return;
 				}
