@@ -204,7 +204,8 @@ public class MusicPlayer extends JFrame{
 							album.setText(null);
 							year.setText(null);
 							//model.add(i, sb.toString());
-							model.addElement((sb.toString()).substring(0,sb.indexOf("/")));
+							//model.add(i, (sb.toString()).substring(0,sb.indexOf("/")));
+							model.add(i, (sb.toString()).substring(0,sb.indexOf("/")));
 							songDB.add(i, sb.toString());
 							songList.setSelectedIndex(i);
 							//System.out.println(songDB.get(songList.getSelectedIndex()));
@@ -295,7 +296,7 @@ public class MusicPlayer extends JFrame{
 							album.setText(null);
 							year.setText(null);
 							//model.add(i, sb.toString());
-							model.addElement((sb.toString()).substring(0,sb.indexOf("/")));
+							model.add(i, (sb.toString()).substring(0,sb.indexOf("/")));
 							songDB.add(i, sb.toString());
 					        songCount++;
 					        songDB.remove(songList.getSelectedIndex());
@@ -361,10 +362,17 @@ public class MusicPlayer extends JFrame{
             }
         }
     });*/
-        @Override
+        //@Override
         public void valueChanged(ListSelectionEvent arg0) {
         		{
-            		userMessage.setText(songDB.get(songList.getSelectedIndex()));
+        			int i =songList.getSelectedIndex();
+        			//System.out.println(i);
+        			if (i!=-1){
+        				if( i<songDB.size()){
+        					//System.out.println(songDB.get(i));
+        					userMessage.setText(songDB.get(i));
+        				}
+        			}
             	}
         	}
     	});
