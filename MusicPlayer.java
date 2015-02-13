@@ -353,7 +353,7 @@ public class MusicPlayer extends JFrame{
 	public static void main(String[] args){
 		MusicPlayer mp = new MusicPlayer("Our Library");
 		mp.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		mp.setSize(750,300);
+		mp.setSize(800,300);
 		mp.setResizable(false);
 		mp.setLocationRelativeTo(null);
 		mp.setVisible(true);
