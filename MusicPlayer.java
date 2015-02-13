@@ -1,5 +1,7 @@
 /*
  * Authors: Amar Bakir, Tolby Lew
+ * Software Methodology
+ * Assignment 1: Song Library
  */
 
 import java.awt.Dimension;
