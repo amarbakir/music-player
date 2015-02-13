@@ -1,6 +1,8 @@
-/*
- * Authors: Amar Bakir, Tolby Lew
+/* Tolby Lew and Omar Bakir
+ * Software Methodology
+ * Assignment 1: Music Player
  */
+
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
