@@ -396,5 +396,14 @@ public class MusicPlayer extends JFrame{
 		mp.setLocationRelativeTo(null);
 		mp.setVisible(true);
 		
+		mp.addWindowListener(new WindowEventHandler());
+	    mp.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		
 	}
 }
+
+class WindowEventHandler extends WindowAdapter {
+	  public void windowClosing(WindowEvent evt) {
+	    System.out.println("Call your method here"); 
+	  }
+	}
