@@ -1,4 +1,4 @@
-/* Tolby Lew and Omar Bakir
+/* Tolby Lew and Amar Bakir
  * Software Methodology
  * Assignment 1: Music Player
  */
