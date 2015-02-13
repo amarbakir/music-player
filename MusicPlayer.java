@@ -30,11 +30,10 @@ public class MusicPlayer extends JFrame{
 	JList<String> songList;
 	DefaultListModel<String> model;
 	ArrayList<String> songDB = new ArrayList<String>();
+	String delims = "/";
 	
 	public MusicPlayer(String title){
 		super(title);
-		
-		String delims = "|";
 		
 		// use FlowLayout
 		setLayout(new FlowLayout(FlowLayout.LEFT,10,10));
@@ -159,17 +158,14 @@ public class MusicPlayer extends JFrame{
             @Override
             public void valueChanged(ListSelectionEvent arg0) {
                 if (!arg0.getValueIsAdjusting()) {
-                	String[] tokens = songDB.get(songList.getSelectedIndex()).split(delims);
+                	String[] tokens = songList.getSelectedValue().split(delims);
                 	String album;
                 	String year;
-                	if (tokens[2].isEmpty()) {
+                	if (tokens.length <= 2) {
                 		album = "N/A";
-                	} else {
-                		album = tokens[2];
-                	}
-                	if (tokens[3].isEmpty()) {
                 		year = "N/A";
                 	} else {
+                		album = tokens[2];
                 		year = tokens[3];
                 	}
                 	userMessage.setText("Artist: " + tokens[1] + " Album: " + album + " Year: " + year);
@@ -183,10 +179,10 @@ public class MusicPlayer extends JFrame{
 				if (name.getText().trim().isEmpty() || artist.getText().trim().isEmpty()) {
 					return;
 				}
-				sb.append(name.getText().trim() + "|");
-				sb.append(artist.getText().trim() + "|");
+				sb.append(name.getText().trim() + "/");
+				sb.append(artist.getText().trim() + "/");
 				if (!album.getText().trim().isEmpty()) {
-					sb.append(album.getText().trim() + "|");
+					sb.append(album.getText().trim() + "/");
 				}
 				if (!year.getText().trim().isEmpty()) {
 					sb.append(year.getText().trim());
