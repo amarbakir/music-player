@@ -1,3 +1,7 @@
+/*
+ * Authors: Amar Bakir, Tolby Lew
+ */
+
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
