@@ -153,7 +153,7 @@ public class MusicPlayer extends JFrame{
 			}
 	    });
 		
-		songList.addListSelectionListener(new ListSelectionListener() {
+		/*songList.addListSelectionListener(new ListSelectionListener() {
 
             @Override
             public void valueChanged(ListSelectionEvent arg0) {
@@ -176,7 +176,7 @@ public class MusicPlayer extends JFrame{
                 	userMessage.setText("Artist: " + tokens[1] + " Album: " + album + " Year: " + year);
                 }
             }
-        });
+        });*/
 		
 		add.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -252,20 +252,90 @@ public class MusicPlayer extends JFrame{
 		
 		delete.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				String[] temp;
 				songDB.remove(songList.getSelectedIndex());
-				model = new DefaultListModel<String>();
-				songList.setModel(model);
-		        songList.setSelectedIndex(0);
-		        temp = songDB.toArray(new String[songDB.size()]);
-		        songList.setListData(temp);
+				model.remove(songList.getSelectedIndex());
+				songList.setSelectedIndex(0);
 		        songCount--;
 			}
 		});
 		
 		confirm.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
+				StringBuilder sb = new StringBuilder();
+				if (name.getText().trim().isEmpty() || artist.getText().trim().isEmpty()) {
+					confirm.setEnabled(false);
+					return;
+				}
+				sb.append(name.getText().trim() + "/");
+				sb.append(artist.getText().trim() + "/");
+				if (!album.getText().trim().isEmpty()) {
+					sb.append(album.getText().trim() + "/");
+				}
+				if (!year.getText().trim().isEmpty()) {
+					sb.append(year.getText().trim());
+				}
 				
+				String[] tokens = sb.toString().split(delims);
+				String[] currentEntry;
+				String[] temp;
+				if (songDB.size() == 0 || songCount == 0) {
+					name.setText(null);
+					artist.setText(null);
+					album.setText(null);
+					year.setText(null);
+					model.addElement(sb.toString());
+					songDB.add(sb.toString());
+			        songCount++;
+			        songDB.remove(songList.getSelectedIndex());
+					model.remove(songList.getSelectedIndex());
+					songList.setSelectedIndex(0);
+			        songCount--;
+			        confirm.setEnabled(false);
+			        return;
+				}
+				int i = 0;
+				for (i = 0; i < songDB.size(); i++) {
+					currentEntry = songDB.get(i).split(delims);
+					if (tokens[0].equalsIgnoreCase(currentEntry[0]) && tokens[1].equalsIgnoreCase(currentEntry[1])) {
+						confirm.setEnabled(false);
+						return;
+					} else {
+						if(tokens[0].compareToIgnoreCase(currentEntry[0]) > 0) {
+							continue;
+						} else if (tokens[0].equalsIgnoreCase(currentEntry[0]) && tokens[1].compareToIgnoreCase(currentEntry[1]) > 0) {
+							continue;
+						} else {
+							name.setText(null);
+							artist.setText(null);
+							album.setText(null);
+							year.setText(null);
+							model.add(i, sb.toString());
+							songDB.add(i, sb.toString());
+					        songCount++;
+					        songDB.remove(songList.getSelectedIndex());
+							model.remove(songList.getSelectedIndex());
+							songList.setSelectedIndex(0);
+					        songCount--;
+					        confirm.setEnabled(false);
+					        return;
+						}
+					}
+				}
+				if (i == songDB.size()) {
+					name.setText(null);
+					artist.setText(null);
+					album.setText(null);
+					year.setText(null);
+					model.addElement(sb.toString());
+					songDB.add(sb.toString());
+			        songCount++;
+			        songDB.remove(songList.getSelectedIndex());
+					model.remove(songList.getSelectedIndex());
+					songList.setSelectedIndex(0);
+			        songCount--;
+			        confirm.setEnabled(false);
+			        return;
+				}
 			}
 		});
 		
