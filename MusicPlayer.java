@@ -27,8 +27,8 @@ public class MusicPlayer extends JFrame{
 	JLabel nLabel, artLabel, albLabel, yLabel;
 	JTextField name, artist, album, year;
 	JLabel userMessage;
-	JList<String> songList;
-	DefaultListModel<String> model;
+	JList songList;
+	DefaultListModel model;
 	ArrayList<String> songDB = new ArrayList<String>();
 	String delims = "/";
 	
@@ -45,8 +45,8 @@ public class MusicPlayer extends JFrame{
 		JPanel textPanel = new JPanel(new GridLayout(0, 1, 0, 0));
 		
 		//AddListbox
-		model = new DefaultListModel<String>();
-		songList = new JList<String>();
+		model = new DefaultListModel();
+		songList = new JList();
 		songList.setModel(model);
 		songList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		songList.setSelectedIndex(0);
@@ -153,31 +153,6 @@ public class MusicPlayer extends JFrame{
 			}
 	    });
 		
-		/*songList.addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(ListSelectionEvent arg0) {
-                if (!arg0.getValueIsAdjusting()) {
-                	if (songCount == 0) {
-                		userMessage.setText("Songlist is empty!");
-                		return;
-                	}
-                	int index = songList.getSelectedIndex();
-                	String[] tokens = songList.getSelectedValue().split(delims);
-                	String album;
-                	String year;
-                	if (tokens.length <= 2) {
-                		album = "N/A";
-                		year = "N/A";
-                	} else {
-                		album = tokens[2];
-                		year = tokens[3];
-                	}
-                	userMessage.setText("Artist: " + tokens[1] + " Album: " + album + " Year: " + year);
-                }
-            }
-        });*/
-		
 		add.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				StringBuilder sb = new StringBuilder();
@@ -201,7 +176,13 @@ public class MusicPlayer extends JFrame{
 					artist.setText(null);
 					album.setText(null);
 					year.setText(null);
-					model.addElement(sb.toString());
+					
+					//HERE!!!!!!
+					/*
+					 * model.addElement((sb.toString()).substring(0,sb.indexOf("|")));
+					 */
+					//model.addElement(sb.toString());
+					model.addElement((sb.toString()).substring(0,sb.indexOf("/")));
 					songDB.add(sb.toString());
 					songList.setSelectedIndex(0);
 			        songCount++;
@@ -222,9 +203,11 @@ public class MusicPlayer extends JFrame{
 							artist.setText(null);
 							album.setText(null);
 							year.setText(null);
-							model.add(i, sb.toString());
+							//model.add(i, sb.toString());
+							model.addElement((sb.toString()).substring(0,sb.indexOf("/")));
 							songDB.add(i, sb.toString());
 							songList.setSelectedIndex(i);
+							//System.out.println(songDB.get(songList.getSelectedIndex()));
 					        songCount++;
 					        return;
 						}
@@ -235,7 +218,8 @@ public class MusicPlayer extends JFrame{
 					artist.setText(null);
 					album.setText(null);
 					year.setText(null);
-					model.addElement(sb.toString());
+					//model.addElement(sb.toString());
+					model.addElement((sb.toString()).substring(0,sb.indexOf("/")));
 					songDB.add(sb.toString());
 					songList.setSelectedIndex(songDB.size() - 1);
 			        songCount++;
@@ -283,7 +267,8 @@ public class MusicPlayer extends JFrame{
 					artist.setText(null);
 					album.setText(null);
 					year.setText(null);
-					model.addElement(sb.toString());
+					//model.addElement(sb.toString());
+					model.addElement((sb.toString()).substring(0,sb.indexOf("/")));
 					songDB.add(sb.toString());
 			        songCount++;
 			        songDB.remove(songList.getSelectedIndex());
@@ -309,7 +294,8 @@ public class MusicPlayer extends JFrame{
 							artist.setText(null);
 							album.setText(null);
 							year.setText(null);
-							model.add(i, sb.toString());
+							//model.add(i, sb.toString());
+							model.addElement((sb.toString()).substring(0,sb.indexOf("/")));
 							songDB.add(i, sb.toString());
 					        songCount++;
 					        songDB.remove(songList.getSelectedIndex());
@@ -326,7 +312,8 @@ public class MusicPlayer extends JFrame{
 					artist.setText(null);
 					album.setText(null);
 					year.setText(null);
-					model.addElement(sb.toString());
+					//model.addElement(sb.toString());
+					model.addElement((sb.toString()).substring(0,sb.indexOf("/")));
 					songDB.add(sb.toString());
 			        songCount++;
 			        songDB.remove(songList.getSelectedIndex());
@@ -348,7 +335,43 @@ public class MusicPlayer extends JFrame{
 				confirm.setEnabled(false);
 			}
 		});
+		
+	songList.addListSelectionListener(new ListSelectionListener() {
+		/*songList.addListSelectionListener(new ListSelectionListener() {
+
+        @Override
+        public void valueChanged(ListSelectionEvent arg0) {
+            if (!arg0.getValueIsAdjusting()) {
+            	if (songCount == 0) {
+            		userMessage.setText("Songlist is empty!");
+            		return;
+            	}
+            	int index = songList.getSelectedIndex();
+            	String[] tokens = songList.getSelectedValue().split(delims);
+            	String album;
+            	String year;
+            	if (tokens.length <= 2) {
+            		album = "N/A";
+            		year = "N/A";
+            	} else {
+            		album = tokens[2];
+            		year = tokens[3];
+            	}
+            	userMessage.setText("Artist: " + tokens[1] + " Album: " + album + " Year: " + year);
+            }
+        }
+    });*/
+        @Override
+        public void valueChanged(ListSelectionEvent arg0) {
+        		{
+            		userMessage.setText(songDB.get(songList.getSelectedIndex()));
+            	}
+        	}
+    	});
+		
 	}
+	
+	
 	
 	public static void main(String[] args){
 		MusicPlayer mp = new MusicPlayer("Our Library");
