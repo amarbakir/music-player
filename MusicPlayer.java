@@ -3,17 +3,15 @@
  * Assignment 1: Music Player
  */
 
-
-
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -28,6 +26,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 
 
 public class MusicPlayer extends JFrame{
@@ -393,18 +392,20 @@ public class MusicPlayer extends JFrame{
 	
 	public static void main(String[] args){
 		MusicPlayer mp = new MusicPlayer("Our Library");
-		mp.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		//mp.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		mp.setDefaultCloseOperation(HIDE_ON_CLOSE);
 		mp.setSize(800,300);
 		mp.setResizable(false);
 		mp.setLocationRelativeTo(null);
 		mp.setVisible(true);
 		
-		mp.addWindowListener(new WindowEventHandler extends WindowAdapter(){
-			  public void windowClosing(WindowEvent evt) {
-				    System.out.println("Call your method here"); 
-				  }
-				});
-	    mp.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		
+		mp.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentHidden(ComponentEvent e) {
+                System.out.println("Replace sysout with your method call");
+                ((JFrame)(e.getComponent())).dispose();
+            }
+        });
+
 	}
 }
