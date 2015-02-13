@@ -120,19 +120,6 @@ public class MusicPlayer extends JFrame{
 		add(textPanel);
 		add(buttonPanel);
 		
-		name.addFocusListener(new FocusListener(){
-	        @Override
-	        public void focusGained(FocusEvent e){
-	        	name.setText("");
-	        }
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-	    });
-		
 		try {
         	File file = new File("songlist.txt");
 			if(!file.exists()) {
@@ -150,6 +137,19 @@ public class MusicPlayer extends JFrame{
 		} catch (IOException x) {
 			x.printStackTrace();
 		}
+		
+		name.addFocusListener(new FocusListener(){
+	        @Override
+	        public void focusGained(FocusEvent e){
+	        	name.setText("");
+	        }
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+	    });
 		
 		artist.addFocusListener(new FocusListener(){
 	        @Override
@@ -227,6 +227,7 @@ public class MusicPlayer extends JFrame{
 				for (i = 0; i < songDB.size(); i++) {
 					currentEntry = songDB.get(i).split(delims);
 					if (tokens[0].equalsIgnoreCase(currentEntry[0]) && tokens[1].equalsIgnoreCase(currentEntry[1])) {
+						userMessage.setText("That song already exists in the list!");
 						return;
 					} else {
 						if(tokens[0].compareToIgnoreCase(currentEntry[0]) > 0) {
@@ -322,6 +323,7 @@ public class MusicPlayer extends JFrame{
 				for (i = 0; i < songDB.size(); i++) {
 					currentEntry = songDB.get(i).split(delims);
 					if (tokens[0].equalsIgnoreCase(currentEntry[0]) && tokens[1].equalsIgnoreCase(currentEntry[1])) {
+						userMessage.setText("That song already exists in the list!");
 						confirm.setEnabled(false);
 						return;
 					} else {
