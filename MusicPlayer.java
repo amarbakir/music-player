@@ -3,7 +3,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;	
+import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
 
@@ -16,6 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 
 public class MusicPlayer extends JFrame{
@@ -112,6 +114,7 @@ public class MusicPlayer extends JFrame{
 				
 			}
 	    });
+		
 		artist.addFocusListener(new FocusListener(){
 	        @Override
 	        public void focusGained(FocusEvent e){
@@ -124,6 +127,7 @@ public class MusicPlayer extends JFrame{
 				
 			}
 	    });
+		
 		album.addFocusListener(new FocusListener(){
 	        @Override
 	        public void focusGained(FocusEvent e){
@@ -136,6 +140,7 @@ public class MusicPlayer extends JFrame{
 				
 			}
 	    });
+		
 		year.addFocusListener(new FocusListener(){
 	        @Override
 	        public void focusGained(FocusEvent e){
@@ -149,23 +154,41 @@ public class MusicPlayer extends JFrame{
 			}
 	    });
 		
+		songList.addListSelectionListener(new ListSelectionListener() {
+
+            @Override
+            public void valueChanged(ListSelectionEvent arg0) {
+                if (!arg0.getValueIsAdjusting()) {
+                	String[] tokens = songDB.get(songList.getSelectedIndex()).split(delims);
+                	String album;
+                	String year;
+                	if (tokens[2].isEmpty()) {
+                		album = "N/A";
+                	} else {
+                		album = tokens[2];
+                	}
+                	if (tokens[3].isEmpty()) {
+                		year = "N/A";
+                	} else {
+                		year = tokens[3];
+                	}
+                	userMessage.setText("Artist: " + tokens[1] + " Album: " + album + " Year: " + year);
+                }
+            }
+        });
+
 		add.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				StringBuilder sb = new StringBuilder();
-				if (name.getText().trim() == null) {
+				if (name.getText().trim().isEmpty() || artist.getText().trim().isEmpty()) {
 					return;
-				} else {
-					sb.append(name.getText().trim() + "|");
 				}
-				if (artist.getText().trim() == null) {
-					return;
-				} else {
-					sb.append(artist.getText().trim() + "|");
-				}
-				if (album.getText().trim() != null) {
+				sb.append(name.getText().trim() + "|");
+				sb.append(artist.getText().trim() + "|");
+				if (!album.getText().trim().isEmpty()) {
 					sb.append(album.getText().trim() + "|");
 				}
-				if (year.getText().trim() != null) {
+				if (!year.getText().trim().isEmpty()) {
 					sb.append(year.getText().trim());
 				}
 				
@@ -194,12 +217,10 @@ public class MusicPlayer extends JFrame{
 					} else {
 						if(tokens[0].compareToIgnoreCase(currentEntry[0]) > 0) {
 							continue;
+						} else if (tokens[0].equalsIgnoreCase(currentEntry[0]) && tokens[1].compareToIgnoreCase(currentEntry[1]) > 0) {
+							continue;
 						} else {
 							songDB.add(i, sb.toString());
-							name.setText(null);
-							artist.setText(null);
-							album.setText(null);
-							year.setText(null);
 							model = new DefaultListModel<String>();
 							for(int j = 0; j < songDB.size(); j++) {
 						        model.addElement(songDB.get(j));
@@ -209,6 +230,10 @@ public class MusicPlayer extends JFrame{
 					        temp = songDB.toArray(new String[songDB.size()]);
 					        songList.setListData(temp);
 					        songCount++;
+					        name.setText(null);
+							artist.setText(null);
+							album.setText(null);
+							year.setText(null);
 							return;
 						}
 					}
